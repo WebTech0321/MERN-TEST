@@ -29,7 +29,7 @@ app.get('/security/:what', (req, res) => {
 });
 
 app.post('/table-content', (req, res) => {
-  res.send("Data of " + req.body.data);
+  res.send("Data is " + req.body.data);
 });
 
 if (process.env.NODE_ENV === 'production') {
