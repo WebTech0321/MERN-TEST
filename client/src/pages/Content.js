@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {generateComponents} from '../helper/rule'
-import DataGrid from '../components/widgets/DataGrid';
 
 const fakeData = [{
     column1: "Michael",
@@ -15,24 +14,26 @@ const fakeData = [{
 function Content(props) {
     const [loading, setLoading] = useState(true);
     const [contentData, setContentData] = useState(null);
-    const [tableData, setTableData] = useState(fakeData);
+    const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
         axios.get(`/security/${props.match.params.id}`)
-        .then(({data}) => {
+        .then(async ({data}) => {
             setLoading(false);
 
             setContentData(data);
 
-            let newTableData = [...fakeData]
-            fakeData.map(async (item, idx) => {
-                newTableData[idx].column2 = await getContentData(item.column2);
-            });
+            let newTableData = []
+            for(let i = 0; i < fakeData.length; i++ ){
+                newTableData.push({
+                    ...fakeData[i],
+                    column2: await getContentData(fakeData[i].column2)
+                })
+            }
 
             setTableData(newTableData);
         });
     }, [])
-
     
     const getContentData = async (param) => {
         const {data} = await axios.post(`/table-content`, {
