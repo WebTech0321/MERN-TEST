@@ -1,5 +1,7 @@
 import { Button, DataGrid, SearchBox } from "../components/widgets";
 
+// return components or function for rendering
+// 
 export const generateComponents = (rule) => {
     let search = null;
     let dataGrid = () => {}
